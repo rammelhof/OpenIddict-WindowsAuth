@@ -22,6 +22,9 @@
     <PackageReference Include="OpenIddict.Server.AspNetCore" Version="5.8.0" />
     <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="5.8.0" />
     <PackageReference Include="OpenIddict.Validation.ServerIntegration" Version="5.8.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
   </ItemGroup>
 

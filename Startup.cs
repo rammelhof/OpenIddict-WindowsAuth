@@ -23,6 +23,7 @@ namespace IdentityServer
             });
             services.AddCors();
             IdentityServer.Add(services);
+            services.AddTransient<IdentityServer>();
             services.AddSingleton<Authentication>();
             services.AddHttpContextAccessor();
             services.AddControllers();
@@ -43,6 +44,8 @@ namespace IdentityServer
                 builder.AllowAnyHeader();
             });
 
+
+
             app.UseRouting();
             app.UseMiddleware<Authentication>();
             app.UseAuthentication();
@@ -52,6 +55,8 @@ namespace IdentityServer
             {
                 endpoints.MapControllers();
             });
+
+            Program.ServiceProvider = app.ApplicationServices;
         }
     }
 }

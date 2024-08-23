@@ -2,18 +2,23 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
-using System.IO;
+
 
 namespace IdentityServer
 {
     public class Program
     {
         public static IConfiguration Configuration;
+        public static IServiceProvider ServiceProvider;
 
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var builder = CreateHostBuilder(args);
+
+            var app = builder.Build();
+            app.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -28,9 +33,16 @@ namespace IdentityServer
                     config.AddCommandLine(args);
                 }
             })
-            .ConfigureLogging(logging =>
+            .ConfigureLogging((context, logging) =>
             {
+
                 logging.ClearProviders();
+
+                var logger = new LoggerConfiguration()
+                    .ReadFrom.Configuration(context.Configuration)
+                    .CreateLogger();
+                logging.AddSerilog(logger);
+
                 logging.SetMinimumLevel(LogLevel.Debug);
             })
             .ConfigureWebHostDefaults(webBuilder =>

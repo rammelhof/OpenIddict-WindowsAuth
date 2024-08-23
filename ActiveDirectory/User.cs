@@ -37,6 +37,14 @@ namespace IdentityServer.ActiveDirectory
                 DirectorySearcher search = new DirectorySearcher();
                 search.Filter = "(&(objectClass=user)(sAMAccountName=" + CleanLDAPString(userName) + "))";
                 search.PropertiesToLoad.Add("cn");
+                search.PropertiesToLoad.Add("memberOf");
+                search.PropertiesToLoad.Add("employeeID");
+                search.PropertiesToLoad.Add("employeeNumber");
+                search.PropertiesToLoad.Add("title");
+                search.PropertiesToLoad.Add("homePhone");
+                search.PropertiesToLoad.Add("mobile");
+                search.PropertiesToLoad.Add("mail");
+                search.PropertiesToLoad.Add("sAMAccountName");
                 SearchResult result = search.FindOne();
                 try
                 {
