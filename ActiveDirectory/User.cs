@@ -36,6 +36,9 @@ namespace IdentityServer.ActiveDirectory
 
                 using (DirectorySearcher search = new DirectorySearcher())
                 {
+                    // no local cache
+                    search.CacheResults = false;
+
                     search.Filter = "(&(objectClass=user)(sAMAccountName=" + CleanLDAPString(userName) + "))";
                     search.PropertiesToLoad.Add("cn");
                     search.PropertiesToLoad.Add("memberOf");
