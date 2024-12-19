@@ -34,23 +34,23 @@ namespace IdentityServer.ActiveDirectory
                     userName = userName.Split('\\')[1];
                 }
 
-                DirectorySearcher search = new DirectorySearcher();
-                search.Filter = "(&(objectClass=user)(sAMAccountName=" + CleanLDAPString(userName) + "))";
-                search.PropertiesToLoad.Add("cn");
-                search.PropertiesToLoad.Add("memberOf");
-                search.PropertiesToLoad.Add("employeeID");
-                search.PropertiesToLoad.Add("employeeNumber");
-                search.PropertiesToLoad.Add("title");
-                search.PropertiesToLoad.Add("homePhone");
-                search.PropertiesToLoad.Add("mobile");
-                search.PropertiesToLoad.Add("mail");
-                search.PropertiesToLoad.Add("sAMAccountName");
-                SearchResult result = search.FindOne();
-                try
+                using (DirectorySearcher search = new DirectorySearcher())
                 {
+                    search.Filter = "(&(objectClass=user)(sAMAccountName=" + CleanLDAPString(userName) + "))";
+                    search.PropertiesToLoad.Add("cn");
+                    search.PropertiesToLoad.Add("memberOf");
+                    search.PropertiesToLoad.Add("title");
+                    search.PropertiesToLoad.Add("telephoneNumber");
+                    search.PropertiesToLoad.Add("mobile");
+                    search.PropertiesToLoad.Add("mail");
+                    search.PropertiesToLoad.Add("sAMAccountName");
+                    search.PropertiesToLoad.Add("displayName");
+                    search.PropertiesToLoad.Add("givenName");
+                    search.PropertiesToLoad.Add("userAccountControl");
+                    search.PropertiesToLoad.Add("sn");
+                    SearchResult result = search.FindOne();
                     base.adobject = result.GetDirectoryEntry();
                 }
-                catch (Exception) { }
             }
         }
 
@@ -92,48 +92,12 @@ namespace IdentityServer.ActiveDirectory
         }
 
         /// <summary>
-        /// Gets or sets the user's initials
-        /// </summary>
-        public String Initials
-        {
-            get { return (String)base.adobject.Properties["initials"].Value; }
-            set { base.adobject.Properties["initials"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
         /// Gets or sets the user's display name
         /// </summary>
         public string DisplayName
         {
             get { return (String)base.adobject.Properties["displayName"].Value; }
             set { base.adobject.Properties["displayName"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's description
-        /// </summary>
-        public String Description
-        {
-            get { return (String)base.adobject.Properties["description"].Value; }
-            set { base.adobject.Properties["description"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's office location
-        /// </summary>
-        public String Office
-        {
-            get { return (String)base.adobject.Properties["physicalDeliveryOfficeName"].Value; }
-            set { base.adobject.Properties["physicalDeliveryOfficeName"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's telephone number
-        /// </summary>
-        public String TelephoneNumber
-        {
-            get { return (String)base.adobject.Properties["telephoneNumber"].Value; }
-            set { base.adobject.Properties["telephoneNumber"].Value = value.Length > 0 ? value : null; }
         }
 
         /// <summary>
@@ -145,91 +109,10 @@ namespace IdentityServer.ActiveDirectory
             set { base.adobject.Properties["mail"].Value = value.Length > 0 ? value : null; }
         }
 
-        /// <summary>
-        /// Gets or sets the user's web page
-        /// </summary>
-        public String WebPage
-        {
-            get { return (String)base.adobject.Properties["wWWHomePage"].Value; }
-            set { base.adobject.Properties["wWWHomePage"].Value = value.Length > 0 ? value : null; }
-        }
-        #endregion
-
-        #region Address Tab
-        /// <summary>
-        /// Gets or sets the user's street address
-        /// </summary>
-        public String Street
-        {
-            get { return (String)base.adobject.Properties["street"].Value; }
-            set { base.adobject.Properties["street"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's PO box
-        /// </summary>
-        public String POBox
-        {
-            get { return (String)base.adobject.Properties["postOfficeBox"].Value; }
-            set { base.adobject.Properties["postOfficeBox"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's city
-        /// </summary>
-        public String City
-        {
-            get { return (String)base.adobject.Properties["l"].Value; }
-            set { base.adobject.Properties["l"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's province or state
-        /// </summary>
-        public String Province
-        {
-            get { return (String)base.adobject.Properties["st"].Value; }
-            set { base.adobject.Properties["st"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's postal code
-        /// </summary>
-        public String PostalCode
-        {
-            get { return (String)base.adobject.Properties["postalCode"].Value; }
-            set { base.adobject.Properties["postalCode"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's country
-        /// </summary>
-        public String Country
-        {
-            get { return (String)base.adobject.Properties["co"].Value; }
-            set { base.adobject.Properties["co"].Value = value.Length > 0 ? value : null; }
-        }
         #endregion
 
         #region Telephone Tab
-        /// <summary>
-        /// Gets or sets the user's home phone number
-        /// </summary>
-        public String HomePhone
-        {
-            get { return (String)base.adobject.Properties["homePhone"].Value; }
-            set { base.adobject.Properties["homePhone"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's pager number
-        /// </summary>
-        public String Pager
-        {
-            get { return (String)base.adobject.Properties["pager"].Value; }
-            set { base.adobject.Properties["pager"].Value = value.Length > 0 ? value : null; }
-        }
-
+        
         /// <summary>
         /// Gets or sets the user's mobile phone number
         /// </summary>
@@ -240,31 +123,14 @@ namespace IdentityServer.ActiveDirectory
         }
 
         /// <summary>
-        /// Gets or sets the user's fax number
+        /// Gets or sets the user's telephone number
         /// </summary>
-        public String FaxNumber
+        public String TelephoneNumber
         {
-            get { return (String)base.adobject.Properties["facsimileTelephoneNumber"].Value; }
-            set { base.adobject.Properties["facsimileTelephoneNumber"].Value = value.Length > 0 ? value : null; }
+            get { return (String)base.adobject.Properties["telephoneNumber"].Value; }
+            set { base.adobject.Properties["telephoneNumber"].Value = value.Length > 0 ? value : null; }
         }
 
-        /// <summary>
-        /// Gets or sets the user's IP Phone number
-        /// </summary>
-        public String IPPhone
-        {
-            get { return (String)base.adobject.Properties["ipPhone"].Value; }
-            set { base.adobject.Properties["ipPhone"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's notes field
-        /// </summary>
-        public String Notes
-        {
-            get { return (String)base.adobject.Properties["notes"].Value; }
-            set { base.adobject.Properties["notes"].Value = value.Length > 0 ? value : null; }
-        }
         #endregion
 
         #region Organization Tab
@@ -276,66 +142,12 @@ namespace IdentityServer.ActiveDirectory
             get { return (String)base.adobject.Properties["title"].Value; }
             set { base.adobject.Properties["title"].Value = value.Length > 0 ? value : null; }
         }
-
-        /// <summary>
-        /// Gets or sets the user's department
-        /// </summary>
-        public String Department
-        {
-            get { return (String)base.adobject.Properties["department"].Value; }
-            set { base.adobject.Properties["department"].Value = value.Length > 0 ? value : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the user's company
-        /// </summary>
-        public String Company
-        {
-            get { return (String)base.adobject.Properties["company"].Value; }
-            set { base.adobject.Properties["company"].Value = value.Length > 0 ? value : null; }
-        }
-        #endregion
-
-        #region Additional Attributes
-        public String EmployeeID
-        {
-            get { return (String)base.adobject.Properties["employeeID"].Value; }
-            set { base.adobject.Properties["employeeID"].Value = value.Length > 0 ? value : null; }
-        }
-
-        public String EmployeeNumber
-        {
-            get { return (String)base.adobject.Properties["employeeNumber"].Value; }
-            set { base.adobject.Properties["employeeNumber"].Value = value.Length > 0 ? value : null; }
-        }
         #endregion
 
         #region Active Directory Settings
-        public String LogonScript
-        {
-            get { return (String)base.adobject.Properties["scriptPath"].Value; }
-            set { base.adobject.Properties["scriptPath"].Value = value.Length > 0 ? value : null; }
-        }
-
-        public String HomeDirectory
-        {
-            get { return (String)base.adobject.Properties["homeDirectory"].Value; }
-            set { base.adobject.Properties["homeDirectory"].Value = value.Length > 0 ? value : null; }
-        }
-
         public String Username
         {
             get { return (String)base.adobject.Properties["sAMAccountName"].Value; }
-        }
-
-        public String ExchangeServerGroup
-        {
-            get { return (String)base.adobject.Properties["homemta"].Value; }
-        }
-
-        public String ProfilePath
-        {
-            get { return (String)base.adobject.Properties["profilePath"].Value; }
         }
         #endregion
 
